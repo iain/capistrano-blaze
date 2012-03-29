@@ -12,7 +12,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       Capistrano::Blaze.success(self)
     end
 
-    task :test do
+    desc "Sends a test message to Campfire"
+    task :test_config do
       Capistrano::Blaze.test(self)
     end
 

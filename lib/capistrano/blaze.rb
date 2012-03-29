@@ -24,6 +24,14 @@ module Capistrano
       res = Net::HTTP.start("#{@config.account}.campfirenow.com", port, :use_ssl => @config.ssl) do |http|
         http.request(req)
       end
+
+      if res.is_a?(Net::HTTPSuccess)
+        puts "Campfire message sent!"
+      else
+        puts "Campfire communication failed!"
+        puts res.inspect
+        puts res.body.inspect
+      end
     end
 
     def failure(context, exception)

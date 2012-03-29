@@ -44,7 +44,7 @@ end
 To test your configuration, run:
 
 ``` shell
-$ cap campfire:test
+$ cap campfire:test_config
 ```
 
 ## Todo
