@@ -51,6 +51,7 @@ $ cap campfire:test_config
 
 * Configure what kinds of messages are displayed
 * Don't depend on the multistage extension
+* Centralize configuration via a `~/.blazerc` or something...
 
 ## Contributing
 
