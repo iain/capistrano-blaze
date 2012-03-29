@@ -2,7 +2,7 @@
 require File.expand_path('../lib/capistrano/blaze/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["iain"]
+  gem.authors       = ["iain", "rdvdijk"]
   gem.email         = ["iain@iain.nl"]
   gem.description   = %q{A simple campfire plugin for capistrano}
   gem.summary       = %q{A simple campfire plugin for capistrano}
