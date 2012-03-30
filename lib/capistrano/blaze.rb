@@ -8,9 +8,12 @@ module Capistrano
   module Blaze
     extend self
 
-    def configure(opts = {})
+    DEFAULTS = { :rc_file => "~/.blazerc" }
+
+    def configure(opts = DEFAULTS)
       @config = OpenStruct.new(opts)
       yield @config if block_given?
+      merge_rc_file!
     end
 
     def speak(message)
@@ -52,6 +55,17 @@ module Capistrano
 
     def command
       [ 'cap', *$* ] * ' '
+    end
+
+    private
+
+    def merge_rc_file!
+      if File.exist? @config.rc_file
+        rc_config = YAML.load_file(@config.rc_file)
+        rc_config.each do |key, value|
+          @config.send("#{key}=", value) unless @config.send(key)
+        end
+      end
     end
 
   end
