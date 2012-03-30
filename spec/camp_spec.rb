@@ -23,24 +23,18 @@ describe Capistrano::Blaze do
     subject.speak "Ik ben een gem aan het maken"
   end
 
-  it "loads token from rc_file if found" do
-    rc_path = File.expand_path("#{File.dirname(__FILE__)}/blazerc")
-    token   = "token-from-file"
+  it "loads configuration from rc file" do
+    rc_path = File.expand_path("#{File.dirname(__FILE__)}/blazerc.rb")
     room_id = 1234
     account = "abcd"
 
-    stub_request(:post, "https://#{token}:X@#{account}.campfirenow.com/room/#{room_id}/speak.json").
-    with(:body => "{\"message\":{\"body\":\"Ik ben een gem aan het maken\"}}",
-         :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
-    to_return(:status => 200, :body => "", :headers => {})
-
-    subject.configure do |config|
+    subject.configure(rc_path) do |config|
       config.account = account
       config.room_id = room_id
       config.ssl     = true
-      config.rc_file = rc_path
     end
-    subject.speak "Ik ben een gem aan het maken"
+
+    subject.config.token.should == "token-from-file"
   end
 
   before do
