@@ -59,7 +59,7 @@ end
 ```
 
 Configuration in your project always overrides the configuration in
-`~/.blazerc.rb`
+`~/.blazerc.rb`.
 
 ## Todo
 
