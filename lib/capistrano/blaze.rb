@@ -8,10 +8,10 @@ module Capistrano
   module Blaze
     extend self
 
-    attr_accessor :config
+    attr_reader :config
 
     def configure(rc_path = "~/.blazerc.rb")
-      load rc_path if !@config and File.exist?(rc_path)
+      load_rc_file!(rc_path)
       @config ||= OpenStruct.new()
       yield @config if block_given?
     end
@@ -55,6 +55,20 @@ module Capistrano
 
     def command
       [ 'cap', *$* ] * ' '
+    end
+
+    def reset_configuration!
+      @config = nil
+    end
+
+    private
+
+    def load_rc_file!(rc_path)
+      if !@loading_rc_file and File.exist?(File.expand_path(rc_path))
+        @loading_rc_file = true
+        load rc_path
+      end
+      @loading_rc_file = false
     end
 
   end

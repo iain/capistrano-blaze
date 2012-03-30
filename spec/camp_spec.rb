@@ -14,6 +14,7 @@ describe Capistrano::Blaze do
          :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
     to_return(:status => 200, :body => "", :headers => {})
 
+    subject.reset_configuration!
     subject.configure do |config|
       config.account = account
       config.room_id = room_id
@@ -25,16 +26,21 @@ describe Capistrano::Blaze do
 
   it "loads configuration from rc file" do
     rc_path = File.expand_path("#{File.dirname(__FILE__)}/blazerc.rb")
-    room_id = 1234
-    account = "abcd"
+    subject.reset_configuration!
+    subject.configure(rc_path)
+    subject.config.token.should == "token-from-file"
+  end
 
+  it "explicit configuration overrides loaded configuration" do
+    rc_path = File.expand_path("#{File.dirname(__FILE__)}/blazerc.rb")
+    room_id = 1234
+
+    subject.reset_configuration!
     subject.configure(rc_path) do |config|
-      config.account = account
       config.room_id = room_id
-      config.ssl     = true
     end
 
-    subject.config.token.should == "token-from-file"
+    subject.config.room_id.should == room_id
   end
 
   before do
@@ -58,6 +64,14 @@ describe Capistrano::Blaze do
     subject.should_receive(:speak).with(":heart: basecamp!")
     context = stub(:application => "basecamp")
     subject.test(context)
+  end
+
+  it "can reset the configuration" do
+    subject.configure do |config|
+      config.account = "foo"
+    end
+    subject.reset_configuration!
+    subject.config.should == nil
   end
 
 end
