@@ -47,11 +47,24 @@ To test your configuration, run:
 $ cap campfire:test_config
 ```
 
+## Global configuration
+
+If you do not want to store your Campfire token (or any other configuration
+option) in your project, your can store it in `~/.blazerc.rb`:
+
+``` ruby
+Capistrano::Blaze.configure do |config|
+  config.token = "efgh"
+end
+```
+
+Configuration in your project always overrides the configuration in
+`~/.blazerc.rb`
+
 ## Todo
 
 * Configure what kinds of messages are displayed
 * Don't depend on the multistage extension
-* Centralize configuration via a `~/.blazerc` or something...
 
 ## Contributing
 
