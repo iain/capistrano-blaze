@@ -25,6 +25,7 @@ module Capistrano
       req.basic_auth @config.token, 'X'
       req.body = { :message => { :body => message } }.to_json
       req.content_type = "application/json"
+      req["User-Agent"] = "Capistrano::Blaze"
 
       res = Net::HTTP.start("#{@config.account}.campfirenow.com", port, :use_ssl => @config.ssl) do |http|
         http.request(req)
