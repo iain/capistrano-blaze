@@ -4,6 +4,16 @@ require 'webmock'
 describe Capistrano::Blaze do
   include WebMock::API
 
+  before do
+    Capistrano::Blaze::Messages.any_instance.stub(:user) { "your mom" }
+  end
+
+  around do |example|
+    $stderr = StringIO.new
+    example.run
+    $stderr = STDERR
+  end
+
   it "can speak" do
     token = "abc"
     room_id = 1234
@@ -22,11 +32,6 @@ describe Capistrano::Blaze do
     end
 
     subject.speak "Ik ben een gem aan het maken"
-
-  end
-
-  before do
-    Capistrano::Blaze::Messages.any_instance.stub(:user) { "your mom" }
   end
 
   it "displays a start message" do
