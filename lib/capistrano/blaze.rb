@@ -14,7 +14,7 @@ module Capistrano
     def_delegators :Messages, :start, :failure, :success, :test
 
     def configure
-      yield configuration if block_given?
+      yield configuration
     end
 
     def configuration
@@ -22,6 +22,7 @@ module Capistrano
     end
 
     def speak(message)
+      validate_configuration
       port = configuration.ssl ? 443 : 80
 
       req = Net::HTTP::Post.new("/room/#{configuration.room_id}/speak.json")
@@ -41,6 +42,26 @@ module Capistrano
         warn res.inspect
         warn res.body.inspect
       end
+    end
+
+    def validate_configuration
+      %w(account room_id token).each do |option|
+        if configuration.send(option).nil?
+          fail MissingConfigurationOption.new(option)
+        end
+      end
+    end
+
+    class MissingConfigurationOption < RuntimeError
+
+      def initialize(option)
+        @option = option
+      end
+
+      def to_s
+        "Please specify the #{@option} option"
+      end
+
     end
 
   end

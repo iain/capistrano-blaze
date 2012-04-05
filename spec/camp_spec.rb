@@ -34,6 +34,13 @@ describe Capistrano::Blaze do
     subject.speak "Ik ben een gem aan het maken"
   end
 
+  it "validates configuration" do
+    subject.configure do |config|
+      config.account = nil
+    end
+    expect { subject.speak "something" }.to raise_error("Please specify the account option")
+  end
+
   it "displays a start message" do
     subject.should_receive(:speak).with("your mom is deploying to the production stage of basecamp, via `#{command}`")
     context = stub(:stage => "production", :application => "basecamp")
