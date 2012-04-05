@@ -24,24 +24,24 @@ describe Capistrano::Blaze do
   end
 
   before do
-    subject.stub(:user) { "iain" }
+    Capistrano::Blaze::Messages.any_instance.stub(:user) { "your mom" }
   end
 
   it "displays a start message" do
-    subject.should_receive(:speak).with("iain is deploying to the production stage of basecamp, via `#{command}`")
+    subject.should_receive(:speak).with("your mom is deploying to the production stage of basecamp, via `#{command}`")
     context = stub(:stage => "production", :application => "basecamp")
     subject.start(context)
   end
 
   it "displays a failure message" do
-    subject.should_receive(:speak).with(":warning: iain failed to deploy to the production stage of basecamp, via `#{command}`: woops (RuntimeError)")
+    subject.should_receive(:speak).with(":warning: your mom failed to deploy to the production stage of basecamp, via `#{command}`: woops (RuntimeError)")
     context = stub(:stage => "production", :application => "basecamp")
     exception = RuntimeError.new("woops")
     subject.failure(context, exception)
   end
 
   it "displays success message" do
-    subject.should_receive(:speak).with("iain succesfully deployed to the production stage of basecamp, via `#{command}`")
+    subject.should_receive(:speak).with("your mom succesfully deployed to the production stage of basecamp, via `#{command}`")
     context = stub(:stage => "production", :application => "basecamp")
     subject.success(context)
   end
@@ -53,13 +53,13 @@ describe Capistrano::Blaze do
   end
 
   it "displays success message without a stage" do
-    subject.should_receive(:speak).with("iain succesfully deployed basecamp, via `#{command}`")
+    subject.should_receive(:speak).with("your mom succesfully deployed basecamp, via `#{command}`")
     context = stub(:application => "basecamp")
     subject.success(context)
   end
 
   it "displays failure message without a stage" do
-    subject.should_receive(:speak).with(":warning: iain failed to deploy basecamp, via `#{command}`: woops (RuntimeError)")
+    subject.should_receive(:speak).with(":warning: your mom failed to deploy basecamp, via `#{command}`: woops (RuntimeError)")
     context = stub(:application => "basecamp")
     exception = RuntimeError.new("woops")
     subject.failure(context, exception)
