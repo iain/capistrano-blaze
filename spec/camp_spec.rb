@@ -66,7 +66,7 @@ describe Capistrano::Blaze do
   end
 
   def command
-    [ 'cap', ARGV ].flatten * ' '
+    [ 'cap', *ARGV ] * ' '
   end
 
 end
