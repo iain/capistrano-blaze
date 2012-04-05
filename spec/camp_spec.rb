@@ -28,14 +28,14 @@ describe Capistrano::Blaze do
   end
 
   it "displays a failure message" do
-    subject.should_receive(:speak).with(":warning: iain failed to deploy to the production stage of basecamp, via `cap`: woops (RuntimeError)")
+    subject.should_receive(:speak).with(":warning: iain failed to deploy to the production stage of basecamp, via `cap #{ARGV.join(' ')}`: woops (RuntimeError)")
     context = stub(:stage => "production", :application => "basecamp")
     exception = RuntimeError.new("woops")
     subject.failure(context, exception)
   end
 
   it "displays success message" do
-    subject.should_receive(:speak).with("iain succesfully deployed to the production stage of basecamp, via `cap`")
+    subject.should_receive(:speak).with("iain succesfully deployed to the production stage of basecamp, via `cap #{ARGV.join(' ')}`")
     context = stub(:stage => "production", :application => "basecamp")
     subject.success(context)
   end
