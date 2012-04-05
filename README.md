@@ -1,10 +1,10 @@
 # Capistrano::Blaze
 
-Because Capistrano::Campfire had to many dependencies and a hard setup, this is
-my attempt at making it easier.
+[![Build Status](https://secure.travis-ci.org/iain/capistrano-blaze.png?branch=master)](http://travis-ci.org/iain/capistrano-blaze)
 
-This gem has no runtime dependencies and should just work right out of the box.
-All you need to do is to provide your Campfire credentials.
+This tiny gem notifies you on Campfire when you use Capistrano.  The only
+thing you have to configure is your Campfire credentials, the proper hooks are
+automatically added.
 
 ## Installation
 
@@ -13,20 +13,6 @@ Add this line to your application's Gemfile:
 ``` ruby
 gem 'capistrano-blaze', :require => false
 ```
-
-And then execute:
-
-``` shell
-$ bundle
-```
-
-Or install it yourself as:
-
-``` shell
-$ gem install capistrano-blaze
-```
-
-## Usage
 
 Add to your `config/deploy.rb`:
 
