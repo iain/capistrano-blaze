@@ -35,19 +35,29 @@ module Capistrano
     end
 
     def failure(context, exception)
-      speak ":warning: #{user} failed to deploy to the #{context.stage} stage of #{context.application}, via `#{command}`: #{exception.to_s} (#{exception.class.inspect})"
+      speak ":warning: #{user} failed to deploy #{stage(context)}#{context.application}, via `#{command}`: #{exception.to_s} (#{exception.class.inspect})"
     end
 
     def success(context)
-      speak "#{user} succesfully deployed to the #{context.stage} stage of #{context.application}, via `#{command}`"
-    end
-
-    def user
-      `whoami`.strip
+      speak "#{user} succesfully deployed #{stage(context)}#{context.application}, via `#{command}`"
     end
 
     def test(context)
       speak ":heart: #{context.application}!"
+    end
+
+    private
+
+    def stage(context)
+      if context.respond_to?(:stage)
+        "to the #{context.stage} stage of "
+      else
+        ""
+      end
+    end
+
+    def user
+      `whoami`.strip
     end
 
     def command

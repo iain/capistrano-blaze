@@ -46,4 +46,18 @@ describe Capistrano::Blaze do
     subject.test(context)
   end
 
+  it "displays success message without a stage" do
+    subject.should_receive(:speak).with("iain succesfully deployed basecamp, via `cap #{ARGV.join(' ')}`")
+    context = stub(:application => "basecamp")
+    subject.success(context)
+  end
+
+  it "displays failure message without a stage" do
+    subject.should_receive(:speak).with(":warning: iain failed to deploy basecamp, via `cap #{ARGV.join(' ')}`: woops (RuntimeError)")
+    context = stub(:application => "basecamp")
+    exception = RuntimeError.new("woops")
+    subject.failure(context, exception)
+  end
+
+
 end
