@@ -34,6 +34,10 @@ module Capistrano
       end
     end
 
+    def start(context)
+      speak "#{user} is deploying #{stage(context)}#{context.application}, via `#{command}`"
+    end
+
     def failure(context, exception)
       speak ":warning: #{user} failed to deploy #{stage(context)}#{context.application}, via `#{command}`: #{exception.to_s} (#{exception.class.inspect})"
     end
