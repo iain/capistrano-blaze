@@ -13,30 +13,33 @@ module Capistrano
 
     def_delegators :Messages, :start, :failure, :success, :test
 
-    def configure(opts = {})
-      @config = OpenStruct.new(opts)
-      yield @config if block_given?
+    def configure
+      yield configuration if block_given?
+    end
+
+    def configuration
+      @config ||= OpenStruct.new
     end
 
     def speak(message)
-      port = @config.ssl ? 443 : 80
+      port = configuration.ssl ? 443 : 80
 
-      req = Net::HTTP::Post.new("/room/#{@config.room_id}/speak.json")
-      req.basic_auth @config.token, 'X'
+      req = Net::HTTP::Post.new("/room/#{configuration.room_id}/speak.json")
+      req.basic_auth configuration.token, 'X'
       req.body = { :message => { :body => message } }.to_json
       req.content_type = "application/json"
       req["User-Agent"] = "Capistrano::Blaze"
 
-      res = Net::HTTP.start("#{@config.account}.campfirenow.com", port, :use_ssl => @config.ssl) do |http|
+      res = Net::HTTP.start("#{configuration.account}.campfirenow.com", port, :use_ssl => configuration.ssl) do |http|
         http.request(req)
       end
 
       if res.is_a?(Net::HTTPSuccess)
-        puts "Campfire message sent!"
+        warn "Campfire message sent!"
       else
-        puts "Campfire communication failed!"
-        puts res.inspect
-        puts res.body.inspect
+        warn "Campfire communication failed!"
+        warn res.inspect
+        warn res.body.inspect
       end
     end
 
