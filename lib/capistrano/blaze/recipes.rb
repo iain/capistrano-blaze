@@ -8,6 +8,10 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   namespace :campfire do
 
+    task :start do
+      Capistrano::Blaze.start(self)
+    end
+
     task :success do
       Capistrano::Blaze.success(self)
     end
@@ -19,6 +23,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   end
 
+  before "deploy",        "campfire:start"
   after "deploy:restart", "campfire:success"
 
 end
