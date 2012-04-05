@@ -1,28 +1,24 @@
 require 'net/http'
 require 'json'
-require 'ostruct'
-require 'forwardable'
 require 'capistrano/blaze/version'
-require 'capistrano/blaze/messages'
+require 'capistrano/blaze/message'
+require 'capistrano/blaze/configuration'
 require 'capistrano/blaze/recipes' if defined?(Capistrano::Configuration)
 
 module Capistrano
   module Blaze
     extend self
-    extend Forwardable
-
-    def_delegators :Messages, :start, :failure, :success, :test
 
     def configure
       yield configuration
     end
 
     def configuration
-      @config ||= OpenStruct.new
+      @configuration ||= Configuration.new
     end
 
     def speak(message)
-      validate_configuration
+      configuration.validate!
       port = configuration.ssl ? 443 : 80
 
       req = Net::HTTP::Post.new("/room/#{configuration.room_id}/speak.json")
@@ -42,26 +38,6 @@ module Capistrano
         warn res.inspect
         warn res.body.inspect
       end
-    end
-
-    def validate_configuration
-      %w(account room_id token).each do |option|
-        if configuration.send(option).nil?
-          fail MissingConfigurationOption.new(option)
-        end
-      end
-    end
-
-    class MissingConfigurationOption < RuntimeError
-
-      def initialize(option)
-        @option = option
-      end
-
-      def to_s
-        "Please specify the #{@option} option"
-      end
-
     end
 
   end

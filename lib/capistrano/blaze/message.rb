@@ -1,6 +1,6 @@
 module Capistrano
   module Blaze
-    class Messages
+    class Message
 
       def self.start(context)
         new(context).start
