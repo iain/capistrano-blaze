@@ -15,8 +15,10 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Capistrano::Blaze::VERSION
 
-  gem.add_development_dependency "rspec", "~> 2.9"
-  gem.add_development_dependency "webmock", "~> 1.8.4"
-  gem.add_development_dependency "rake", "~> 0.9.2"
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "webmock"
+  gem.add_development_dependency "rake"
   gem.add_dependency "json"
+  gem.add_dependency 'blaze', '~> 0.0.1'
+
 end

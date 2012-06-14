@@ -17,7 +17,7 @@ describe Capistrano::Blaze do
 
     stub_request(:post, "http://#{token}:X@#{account}.campfirenow.com/room/#{room_id}/speak.json").
     with(:body => "{\"message\":{\"body\":\"Ik ben een gem aan het maken\"}}",
-         :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'Capistrano::Blaze'}).
+         :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'Blaze'}).
          to_return(:status => 200, :body => "", :headers => {})
 
     subject.configure do |config|
