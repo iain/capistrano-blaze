@@ -23,7 +23,8 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   end
 
-  before "deploy",        "campfire:start"
-  after "deploy:restart", "campfire:success"
+  before "deploy",            "campfire:start"
+  before "deploy:migrations", "campfire:start"
+  after "deploy:restart",     "campfire:success"
 
 end
